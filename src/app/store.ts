@@ -55,7 +55,7 @@ const logger = createLogger({
 
 export const store = configureStore({
   reducer: persistedReducer,
-  preloadedState: {...initialStorageState, _persist: {rehydrated: false, version: 0}},
+  preloadedState: initialStorageState,
   devTools: process.env.NODE_ENV !== 'production',
   middleware: getDefaultMiddleware => {
     return getDefaultMiddleware({
