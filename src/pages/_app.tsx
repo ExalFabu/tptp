@@ -36,8 +36,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 <title>{SchemaORG['name']}</title>
                 <meta name="viewport" content="width=device-width,initial-scale=1" />
                 <meta name="description" content={SchemaORG['description']} />
-                <script async src={'https://www.googletagmanager.com/gtag/js?id=G-NDMGLF3H9S'} />
-                <script dangerouslySetInnerHTML={{ __html: gtagCode }} />
+                <Script async src={'https://www.googletagmanager.com/gtag/js?id=G-NDMGLF3H9S'} />
+                <Script dangerouslySetInnerHTML={{ __html: gtagCode }} />
                 <meta name="google-site-verification" content="Oq3f3LWCCl4gvndQDsIgq0SX8eUFeQZ-18xHphr2OmI" />
                 {/* Facebook meta tags*/}
                 <meta property="og:title" content="TPTP" key="og:title" />
@@ -61,7 +61,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 <meta property="twitter:card" content="summary" />
                 <meta property="twitter:url" content="https://tptp.vercel.app/" />
                 <meta property="twitter:image" content="/images/TPTP-b-bgless.png" />
-                <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(SchemaORG) }} />
+                <Script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(SchemaORG) }} />
                 
                 {/* Images */}
 
