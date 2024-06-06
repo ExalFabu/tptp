@@ -4,7 +4,7 @@ import {
     ExpandedIndex, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader,
     ModalOverlay, Text, useToast
 } from "@chakra-ui/react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React, { useEffect, useState } from "react";
 import { FaCaretDown, FaPollH } from "react-icons/fa";
 import { API_FETCH_UNIPA_URL, FetchFromUnipaResponse } from "../../../../pages/api/unipa/fetch";
