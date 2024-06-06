@@ -1,5 +1,5 @@
 import { SimpleGrid, useToast } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { batch } from 'react-redux';
 import Footer from '../common/Footer';
 import Header from '../common/Header';
@@ -10,13 +10,17 @@ import LectureTable from '../features/lectures/LectureTable';
 import { dangerouslySetAllPreferences, IAverageBonus, IPreferences } from '../features/preferences/preferencesDuck';
 import PreferencesTab from '../features/preferences/PreferencesTab';
 import { exactWidth } from '../theme';
-import { useAppDispatch } from './hooks';
+import useTelegramInitData, { useAppDispatch } from './hooks';
 
 
 
 const TPTP: React.FC = () => {
   const dispatch = useAppDispatch()
   const toast = useToast()
+  const tgData = useTelegramInitData()
+  console.log("TG", tgData)
+  const { user } = tgData
+  const [welcomeToastShown, setWelcomeToastShown] = useState(false)
   useEffect(() => {
     // Migrate from previous localStoage data
     const lectures = localStorage.getItem("lectures")
@@ -47,8 +51,8 @@ const TPTP: React.FC = () => {
 
   }, [])
 
-  useEffect(()=>{
-    if(window.location.pathname.match(/\/?(\w|\d){10,}/) !== null){
+  useEffect(() => {
+    if (window.location.pathname.match(/\/?(\w|\d){10,}/) !== null) {
       toast({
         title: "Link obsoleto",
         description: "Il link che hai utilizzato è obsoleto, per importare le materie usa la funzionalità in alto a destra",
@@ -61,6 +65,23 @@ const TPTP: React.FC = () => {
       window.history.replaceState("", "", window.location.href.replace(window.location.pathname, ""))
     }
   }, [])
+
+
+  useEffect(() => {
+    if (user && !welcomeToastShown) {
+      let name = user.first_name + user.last_name
+      if (!name) name = (user.usernames && user.usernames[0]) || name;
+      toast({
+        description: `Bentornato, ${name}`,
+        position: "bottom",
+        variant: "top-accent",
+        duration: 1500,
+        status: "success",
+        size: "sm"
+      })
+      setWelcomeToastShown(true);
+    }
+  }, [user])
 
   return (
     <>
