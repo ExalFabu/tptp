@@ -12,6 +12,8 @@
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.4.5",
     "framer-motion": "^11.2.10",
@@ -36,7 +38,7 @@
     "start": "next start",
     "build": "next build",
     "dev": "next dev",
-    "test": "echo ok",
+    "lint": "eslint",
     "analyze": "ANALYZE=true next build"
   },
   "eslintConfig": {
@@ -62,7 +64,7 @@
     "typescript": "^5.4.5"
   },
   "resolutions": {
-    "@types/react": "17.0.15",
-    "@types/react-dom": "17.0.15"
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.1"
   }
 }

@@ -18,6 +18,9 @@ const nextConfig = {
     reloadOnOnline: false,
     runtimeCaching,
   },
+  eslint: {
+    ignoreDuringBuilds: true
+  },
   webpack: function (config, { isServer, webpack }) {
     if (!isServer) {
       config.plugins.push(
