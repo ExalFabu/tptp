@@ -21,7 +21,7 @@ export const UnipaLabel = () => <>
         width={25}
         height={25}
     />
-    <Text ml={"1em"}> UniPa</Text>
+    <Text ml={"1em"}> UniPa ⚒️</Text>
 </>
 
 
