@@ -29,7 +29,8 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "reselect": "^5.1.1",
-    "web-vitals": "^4.0.1"
+    "web-vitals": "^4.0.1",
+    "yarn": "^1.22.22"
   },
   "scripts": {
     "start": "next start",
@@ -57,6 +58,7 @@
     "@types/cheerio": "^0.22.35",
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/redux-logger": "^3.0.13",
+    "eslint": "^9.4.0",
     "typescript": "^5.4.5"
   },
   "resolutions": {
