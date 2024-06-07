@@ -98,7 +98,8 @@ const TPTP: React.FC = () => {
         },
         {
           id: "OK",
-          type: "ok"
+          type: "default",
+          text: "Salva ed esci",
         },
         {
           id: "STAY",
