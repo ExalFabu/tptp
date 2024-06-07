@@ -4,6 +4,8 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { Provider } from 'react-redux'
 import { store } from '../app/store'
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 
 const gtagCode = `window.dataLayer = window.dataLayer || [];
                     function gtag() {
@@ -142,6 +144,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <Provider store={store}>
                 <Component {...pageProps} />
             </Provider>
+            <SpeedInsights />
+            <Analytics />
         </ChakraProvider>
     )
 }

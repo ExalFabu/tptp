@@ -10,17 +10,16 @@ import LectureTable from '../features/lectures/LectureTable';
 import { dangerouslySetAllPreferences, IAverageBonus, IPreferences } from '../features/preferences/preferencesDuck';
 import PreferencesTab from '../features/preferences/PreferencesTab';
 import { exactWidth } from '../theme';
-import useTelegramInitData, { useAppDispatch } from './hooks';
+import { useAppDispatch } from './hooks';
+import { setDebug, useBackButton, useClosingBehavior, useInitData, useViewport } from '@tma.js/sdk-react';
 
 
 
 const TPTP: React.FC = () => {
   const dispatch = useAppDispatch()
   const toast = useToast()
-  const tgData = useTelegramInitData()
-  console.log("TG", tgData)
-  const { user } = tgData
-  const [welcomeToastShown, setWelcomeToastShown] = useState(false)
+  setDebug(true)
+
   useEffect(() => {
     // Migrate from previous localStoage data
     const lectures = localStorage.getItem("lectures")
@@ -66,11 +65,19 @@ const TPTP: React.FC = () => {
     }
   }, [])
 
+  // TELEGRAM 
+
+  const initData = useInitData()
+  const vp = useViewport()
+  const bb = useBackButton()
+  const closingBehavior = useClosingBehavior()
+  const [welcomeToastShown, setWelcomeToastShown] = useState(false)
+
 
   useEffect(() => {
+    const user = initData?.user
     if (user && !welcomeToastShown) {
-      let name = user.first_name + user.last_name
-      if (!name) name = (user.usernames && user.usernames[0]) || name;
+      let name = user.firstName + user.lastName
       toast({
         description: `Bentornato, ${name}`,
         position: "bottom",
@@ -81,7 +88,17 @@ const TPTP: React.FC = () => {
       })
       setWelcomeToastShown(true);
     }
-  }, [user])
+    if (vp) {
+      console.log("TG, expanding")
+      vp.expand()
+    }
+    if (bb) {
+      bb.hide()
+    }
+    if (closingBehavior) {
+      closingBehavior.disableConfirmation()
+    }
+  }, [initData, vp, bb, closingBehavior])
 
   return (
     <>

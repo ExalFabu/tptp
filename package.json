@@ -12,14 +12,19 @@
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
+    "@tma.js/init-data-node": "^1.2.7",
+    "@tma.js/sdk-react": "^2.2.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@vercel/analytics": "^1.3.1",
+    "@vercel/speed-insights": "^1.0.11",
     "axios": "^1.7.2",
     "cheerio": "^1.0.0-rc.12",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "framer-motion": "^11.2.10",
     "jsonschema": "^1.4.1",
-    "mongoose": "^8.4.1",
+    "mongodb": "^6.7.0",
     "nanoid": "^5.0.7",
     "next": "^14.2.3",
     "next-compose-plugins": "^2.2.1",
@@ -62,7 +67,6 @@
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/redux-logger": "^3.0.13",
     "eslint": "^9.4.0",
-    "telegram-webapps-types": "^1.0.5",
     "typescript": "^5.4.5"
   }
 }
