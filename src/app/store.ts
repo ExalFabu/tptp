@@ -31,10 +31,11 @@ export interface IAppState {
   options: IOptions;
 }
 
-const persistConfig: PersistConfig<IAppState> = {
+export const persistConfig: PersistConfig<IAppState> = {
   key: 'TPTP',
   storage,
   version: 0,
+  debug: process.env.NODE_ENV !== "production",
 };
 const rootReducer = combineReducers({
   lectures: lecturesReducer,
@@ -63,7 +64,7 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     })
-    // .concat(logger);
+    .concat(logger);
   },
 });
 

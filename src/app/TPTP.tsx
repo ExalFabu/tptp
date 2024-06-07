@@ -1,18 +1,20 @@
 import { SimpleGrid, useToast } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { BackButton, ClosingBehavior, InitData, MiniApp, Popup, Viewport, isTMA, setDebug, useBackButton, useClosingBehavior, useInitData, useMiniApp, usePopup, useViewport } from '@tma.js/sdk-react';
+import { useCallback, useEffect, useState } from 'react';
 import { batch } from 'react-redux';
 import Footer from '../common/Footer';
 import Header from '../common/Header';
 import Average from '../features/average/Average';
-import { dangerouslySetAllOptions, IOptions } from '../features/average/averageDuck';
-import { dangerouslySetAllLectures, ILecture } from '../features/lectures/lectureDuck';
+import { IOptions, dangerouslySetAllOptions } from '../features/average/averageDuck';
 import LectureTable from '../features/lectures/LectureTable';
-import { dangerouslySetAllPreferences, IAverageBonus, IPreferences } from '../features/preferences/preferencesDuck';
+import { ILecture, dangerouslySetAllLectures } from '../features/lectures/lectureDuck';
 import PreferencesTab from '../features/preferences/PreferencesTab';
+import { IAverageBonus, IPreferences, dangerouslySetAllPreferences } from '../features/preferences/preferencesDuck';
 import { exactWidth } from '../theme';
 import { useAppDispatch } from './hooks';
-import { setDebug, useBackButton, useClosingBehavior, useInitData, useViewport } from '@tma.js/sdk-react';
-
+import { retrieveFromBackend, saveToBackend } from '../features/telegram/telegramDuck';
+import { IAppState, persistConfig, persistor } from './store';
+import getStoredState from 'redux-persist/es/getStoredState';
 
 
 const TPTP: React.FC = () => {
@@ -66,39 +68,107 @@ const TPTP: React.FC = () => {
   }, [])
 
   // TELEGRAM 
+  let initData: InitData | undefined = undefined;
+  let miniApp: MiniApp | undefined = undefined;
+  let vp: Viewport | undefined = undefined;
+  let bb: BackButton | undefined = undefined;
+  let closingBehavior: ClosingBehavior | undefined = undefined;
+  let popup: Popup | undefined = undefined
 
-  const initData = useInitData()
-  const vp = useViewport()
-  const bb = useBackButton()
-  const closingBehavior = useClosingBehavior()
-  const [welcomeToastShown, setWelcomeToastShown] = useState(false)
+  try { initData = useInitData() } catch (e) { console.error("Error while initializing TG data") }
+  try { miniApp = useMiniApp() } catch (e) { console.error("Error while initializing TG data") }
+  try { vp = useViewport() } catch (e) { console.error("Error while initializing TG data") }
+  try { bb = useBackButton() } catch (e) { console.error("Error while initializing TG data") }
+  try { closingBehavior = useClosingBehavior() } catch (e) { console.error("Error while initializing TG data") }
+  try { popup = usePopup() } catch (e) { console.error("Error while initializing TG data") }
+
+  const [telegramInitted, setTelegramInitted] = useState(false)
+
+  const onBackClick = useCallback(async () => {
+    if (!popup) return
+    if (popup.isOpened) return;
+    const btnId = await popup.open({
+      title: "TPTP",
+      message: "Vuoi salvare i dati?",
+      buttons: [
+        {
+          id: "KO",
+          text: "Esci senza salvare",
+          type: "destructive"
+        },
+        {
+          id: "OK",
+          type: "ok"
+        },
+        {
+          id: "STAY",
+          type: "cancel"
+        }
+      ]
+    });
+    console.log("OnBackClick", btnId)
+    if(btnId === "KO") {
+      return miniApp?.close()
+    }
+    else if (btnId === "STAY" || btnId === null) {
+      return;
+    }
+    const res = await getStoredState(persistConfig) as IAppState
+    await saveToBackend(res)
+    miniApp?.close()
+  }, [popup])
 
 
   useEffect(() => {
-    const user = initData?.user
-    if (user && !welcomeToastShown) {
-      let name = user.firstName + user.lastName
-      toast({
-        description: `Bentornato, ${name}`,
-        position: "bottom",
-        variant: "top-accent",
-        duration: 1500,
-        status: "success",
-        size: "sm"
-      })
-      setWelcomeToastShown(true);
+    const initTelegram = async () => {
+      const tma = await isTMA()
+      if (!tma || telegramInitted) return null;
+
+      const value = await retrieveFromBackend()
+      let welcome = "Benvenuto"
+      if (value) {
+        const { lectures, options, preferences } = value
+        batch(() => {
+          dispatch(dangerouslySetAllLectures(lectures));
+          dispatch(dangerouslySetAllOptions(options));
+          dispatch(dangerouslySetAllPreferences(preferences))
+        })
+        welcome = "Bentornato"
+      }
+      const user = initData?.user
+      if (user && !telegramInitted) {
+        let name = user.firstName + user.lastName
+        toast({
+          description: `${welcome}, ${name}`,
+          position: "bottom",
+          variant: "top-accent",
+          duration: 2500,
+          status: "success",
+          size: "sm"
+        })
+      }
+      setTelegramInitted(true);
     }
+    initTelegram();
+  }, [])
+
+  useEffect(() => {
     if (vp) {
       console.log("TG, expanding")
       vp.expand()
     }
+
     if (bb) {
-      bb.hide()
+      bb.show()
+      bb.on("click", async () => {
+        console.log("clickeeeeddd", popup)
+        onBackClick();
+      })
     }
     if (closingBehavior) {
-      closingBehavior.disableConfirmation()
+      closingBehavior.enableConfirmation()
     }
-  }, [initData, vp, bb, closingBehavior])
+  }, [vp, bb, closingBehavior])
 
   return (
     <>
