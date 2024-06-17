@@ -1,5 +1,5 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import React from 'react';
 
 const WhiteLogo = ({ display = "inherit", ...props }: { display?: string }) => {

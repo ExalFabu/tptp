@@ -209,7 +209,7 @@ function FinalBonusComponent({
         </Flex> : <Center>
           <Slider
             colorScheme="teal"
-            aria-label='slider-ex-1' defaultValue={0} min={0} max={15} step={1} my={"2em"} maxWidth={"80%"} value={temporarySliderValue} onChange={setTemporarySliderValue} onChangeEnd={endOfSliding} >
+            aria-label='slider-ex-1' defaultValue={0} min={0} max={10} step={0.1} my={"2em"} maxWidth={"80%"} value={temporarySliderValue} onChange={setTemporarySliderValue} onChangeEnd={endOfSliding} >
             <SliderTrack>
               <SliderFilledTrack />
             </SliderTrack>

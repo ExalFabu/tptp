@@ -1,5 +1,5 @@
 export const exactWidth = {
-    base: "320px",
+    base: "350px",
     sm: "350px",
     md: "720px",
 }

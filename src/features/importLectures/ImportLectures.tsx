@@ -1,4 +1,4 @@
-import { Button, Menu, MenuButton, MenuItem, MenuList, useDisclosure } from "@chakra-ui/react"
+import { Button, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure } from "@chakra-ui/react"
 import React from "react"
 import { FaCloudDownloadAlt } from "react-icons/fa"
 import ModalFromUnipa, { UnipaLabel } from "./components/UniPa/ModalWrapper"
@@ -16,7 +16,7 @@ const ImportLecture: React.FC = () => {
                 Importa Materie
             </MenuButton>
             <MenuList>
-                <MenuItem onClick={onOpenUnipa}>
+                <MenuItem onClick={onOpenUnipa} isDisabled={true}>
                     <UnipaLabel />
                 </MenuItem>
             </MenuList>
